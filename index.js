@@ -201,8 +201,15 @@ function lookup(root, partial, options){
 
   // Make sure we use dirname in case of relative partials
   // ex: for partial('../user') look for /path/to/root/../user.ejs
-  var dir = './' + dirname(partial)
+  var dir =  dirname(partial)
     , base = basename(partial, ext);
+
+  // If partial begins with path.sep attempt to find partial relative to settings.views
+  // ex: for partial('/user') within /pages/main.ejs look for /root/user.ejs
+  if (dir.charAt(0) === path.sep) {
+    partial = resolve(options.settings.views, dir.slice(1), base+ext);
+    if( exists(partial) ) return options.cache ? cache[key] = partial : partial;
+  }
 
   // _ prefix takes precedence over the direct path
   // ex: for partial('user') look for /root/_user.ejs
