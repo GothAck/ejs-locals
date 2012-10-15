@@ -201,7 +201,7 @@ function lookup(root, partial, options){
 
   // Make sure we use dirname in case of relative partials
   // ex: for partial('../user') look for /path/to/root/../user.ejs
-  var dir = dirname(partial)
+  var dir = './' + dirname(partial)
     , base = basename(partial, ext);
 
   // _ prefix takes precedence over the direct path
